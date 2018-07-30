@@ -72,7 +72,7 @@ class DQN():
             if done:
                 y_batch.append(reward_batch[i])
             else:
-                y_batch.append(reward_batch[i] + GAMMA * np.max(Q_value_batch[i]))
+                y_batch.append(reward_batch[i] + GAMMA * np.max(Q_value_batch[i]))  # use Q' and Bellman function to calculate the Q value
 
         self.optimizer.run(feed_dict={
             self.y_input: y_batch,
@@ -80,7 +80,7 @@ class DQN():
             self.state_input: state_batch
         })
 
-    def perceive(self, state, action, reward, next_state, done):
+    def store(self, state, action, reward, next_state, done):
         one_hot_action = np.zeros(self.action_dim)
         one_hot_action[action] = 1
         self.replay_buffer.append((state, one_hot_action, reward, next_state, done))
@@ -119,7 +119,7 @@ def main():
             action = agent.egreedy_action(state)
             next_state, reward, done, _ = env.step(action)
             reward_agent = -1 if done else 0.1
-            agent.perceive(state, action, reward, next_state, done)
+            agent.store(state, action, reward_agent, next_state, done)
             state = next_state
             if done:
                 break
@@ -137,8 +137,8 @@ def main():
                         break
             ave_reward = total_reward / TEST
             print('episode', episode, 'Average reward:', ave_reward)
-            if ave_reward >= 200:
-                break
+            # if ave_reward >= 200:
+            #     break
 
 
 if __name__ == '__main__':

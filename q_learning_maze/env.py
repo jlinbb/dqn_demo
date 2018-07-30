@@ -45,13 +45,13 @@ class Maze(tk.Tk, object):
         self.canvas = tk.Canvas(self, bg='white', width=WIDTH*UNIT, height=HEIGHT*UNIT)
 
         for c in range(0, WIDTH * UNIT, UNIT):
-            x0, y0, x1, y1 = c, 0 ,c , HEIGHT * UNIT
+            x0, y0, x1, y1 = c, 0 , c , HEIGHT * UNIT
             self.canvas.create_line(x0, y0, x1, y1)
         for r in range(0, HEIGHT * UNIT, UNIT):
             x0, y0, x1, y1 = 0, r, WIDTH * UNIT, r
             self.canvas.create_line(x0, y0, x1, y1)
 
-        self.origin = np.array([20, 20]) # center
+        self.origin = np.array([20, 20])  # center
         self.robot_center = self.origin + np.array([0, UNIT*2])
         self.robot_size = 15
         self.robot = self._create_object(

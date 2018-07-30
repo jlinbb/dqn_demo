@@ -5,11 +5,6 @@ import numpy as np
 import random
 from PIL import Image
 from collections import deque
-from sklearn.linear_model import LogisticRegression
-
-clf = LogisticRegression()
-clf.fit()
-
 
 
 CNN_INPUT_SIZE = 80

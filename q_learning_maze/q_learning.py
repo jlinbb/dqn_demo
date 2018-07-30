@@ -4,14 +4,14 @@ import pandas as pd
 class QLearning:
     def __init__(self, actions, learning_rate=0.01, discount=0.9, e_greedy=0.01):
         self.actions = actions
+        self.q_table = pd.DataFrame(columns=self.actions, dtype=np.float32)
         self.alpha = learning_rate
         self.gamma = discount
         self.epsilon = e_greedy
-        self.q_table = pd.DataFrame(columns=self.actions, dtype=np.float32)
         # print(self.q_table)
 
 
-    def check_state_exist(self, state):
+    def add_state(self, state):
         if state not in self.q_table.index:
             self.q_table = self.q_table.append(pd.Series(
                 [0] * len(self.actions),
@@ -21,7 +21,7 @@ class QLearning:
 
 
     def choose_action(self, state):
-        self.check_state_exist(state)
+        self.add_state(state)
         if np.random.uniform() < self.epsilon:
             action = np.random.choice(self.actions)
         else:
@@ -38,7 +38,7 @@ class QLearning:
 
 
     def learn(self, s, a, r, s_):
-        self.check_state_exist(s_)
+        self.add_state(s_)
         q_predict = self.q_table.loc[s, a]
         if s_ != 'terminal':
             q_target = r + self.gamma * self.q_table.loc[s_, :].max()
